@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <title>You win — Clavis</title>
+  <style>
+    body{font-family:Arial, sans-serif;background:#f6f7fb;margin:0;padding:24px;}
+    .top{max-width:900px;margin:0 auto;}
+    .card{background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.06);}
+    button{padding:8px 12px;border-radius:6px;border:none;background:#3466af;color:#fff;}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="card" style="margin-top:12px;">
+      <h2>🎉 Correct!</h2>
+      <p><strong>Sentence:</strong> <span th:text="${sentence}">the sentence</span></p>
+      <p><strong>Score:</strong> <span th:text="${score}">0</span></p>
+      <p><strong>Attempts:</strong> <span th:text="${attempts}">0</span></p>
+      <p><strong>Time (s):</strong> <span th:text="${elapsed}">0</span></p>
+
+      <a href="/game"><button>Play another puzzle</button></a>
+      <a href="/leaderboard" style="margin-left:12px"><button>View leaderboard</button></a>
+    </div>
+  </div>
+</body>
+</html>

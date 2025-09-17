@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <title>Clavis - Cipher Game</title>
+  <style>
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background: #2f3d3d;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .game-container {
+      background: #3d4f46;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px;
+      width: 600px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    nav a, nav button {
+      color: #fff;
+      text-decoration: none;
+      background: #5a7d6c;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .stat-box {
+      flex: 1;
+      margin: 0 6px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .stat-score { background: #fcefb4; }
+    .stat-time { background: #c9e7ff; }
+    .stat-streak { background: #fbcaca; }
+
+    .encrypted {
+      background: #2e3c35;
+      color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .decode-box {
+      background: #eaf4e9;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .decode-box form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .decode-box input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    .buttons button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-check { background: #5a7d6c; }
+
+    .hint, .error {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .hint { background: #fff3cd; color: #856404; }
+    .error { background: #f8d7da; color: #721c24; }
+
+    .difficulty {
+      margin-top: 16px;
+      text-align: center;
+    }
+    .difficulty select {
+      padding: 8px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+
+    <nav>
+      <div>
+        <a href="/leaderboard">🏆 Leaderboard</a>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/users">⚙️ Admin</a>
+      </div>
+      <form style="display:inline" action="/logout" method="post">
+        <button type="submit">Logout</button>
+      </form>
+    </nav>
+
+    <div class="stats">
+      <div class="stat-box stat-score">
+        SCORE <br><span th:text="${score}">0</span>
+      </div>
+      <div class="stat-box stat-time">
+        TIME <br><span th:text="${time}">00:00</span>
+      </div>
+      <div class="stat-box stat-streak">
+        STREAK <br><span th:text="${streak}">0</span>
+      </div>
+    </div>
+
+    <div class="encrypted">
+      <div>🔒 ENCRYPTED MESSAGE</div>
+      <div th:text="${scrambled}">QNUUX FXAUM</div>
+    </div>
+
+    <div class="decode-box">
+      <label for="answer">Your Decode:</label>
+      <form action="/game/guess" method="post">
+        <input id="answer" name="answer" type="text" required placeholder="Type your answer here"/>
+        <div class="buttons">
+          <button type="submit" class="btn-check">CHECK</button>
+        </div>
+      </form>
+    </div>
+
+    <div th:if="${hint}" class="hint"><strong>Hint:</strong> <span th:text="${hint}">hint text</span></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <div class="difficulty">
+      <p><strong>Difficulty:</strong> <span th:text="${difficulty}">EASY</span></p>
+      <form method="get" action="/game">
+        <label for="difficulty">Change difficulty: </label>
+        <select name="difficulty" id="difficulty">
+          <option value="EASY" th:selected="${difficulty == 'EASY'}">Easy</option>
+          <option value="MEDIUM" th:selected="${difficulty == 'MEDIUM'}">Medium</option>
+          <option value="HARD" th:selected="${difficulty == 'HARD'}">Hard</option>
+        </select>
+        <button type="submit">Set</button>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>

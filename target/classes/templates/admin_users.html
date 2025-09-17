@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8" /><title>Admin - Users</title>
+  <style>body{font-family:Arial;margin:24px;background:#f6f7fb}.card{background:#fff;padding:16px;border-radius:8px;max-width:900px;margin:0 auto}table{width:100%;border-collapse:collapse}td,th{padding:8px;border:1px solid #eee}button{padding:6px 10px;border-radius:6px;background:#e74c3c;color:#fff;border:none}</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Admin — Users</h1>
+    <table>
+      <thead><tr><th>ID</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr th:each="u : ${users}">
+          <td th:text="${u.id}">1</td>
+          <td th:text="${u.username}">name</td>
+          <td th:text="${u.role}">PLAYER</td>
+          <td>
+            <form method="post" action="/admin/users/delete">
+              <input type="hidden" name="id" th:value="${u.id}" />
+              <button type="submit" onclick="return confirm('Delete user? This removes their scores too.')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;"><a href="/game">Back</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8" /><title>Leaderboard</title>
+  <style>body{font-family:Arial;margin:24px;background:#f6f7fb}.card{background:#fff;padding:16px;border-radius:8px;max-width:900px;margin:0 auto}table{width:100%;border-collapse:collapse}td,th{padding:8px;border:1px solid #eee}</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Leaderboard (Top 10)</h1>
+    <table>
+      <thead><tr><th>Rank</th><th>Player</th><th>Points</th><th>Attempts</th><th>Time (s)</th><th>Date</th></tr></thead>
+      <tbody>
+        <tr th:each="sc,iterStat : ${top}">
+          <td th:text="${iterStat.index + 1}">1</td>
+          <td th:text="${sc.user.username}">player</td>
+          <td th:text="${sc.points}">0</td>
+          <td th:text="${sc.attempts}">0</td>
+          <td th:text="${sc.timeTakenSeconds}">0</td>
+          <td th:text="${#dates.format(sc.achievedAt, 'yyyy-MM-dd HH:mm')}">date</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;"><a href="/game">Back to game</a></p>
+  </div>
+</body>
+</html>
